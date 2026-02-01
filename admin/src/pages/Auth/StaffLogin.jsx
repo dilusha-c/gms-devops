@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Header from "../../components/header";
 import Footer from "../../components/Footer";
+import api from '../../services/api';
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -28,22 +29,8 @@ const AdminLogin = () => {
     try {
       console.log('Submitting login with:', formData);
 
-      const response = await fetch('http://localhost:8090/api/staff/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const { data } = await api.post('/staff/login', formData);
 
-      console.log('Login response status:', response.status);
-
-      if (!response.ok) {
-        throw new Error('Invalid NIC or password');
-      }
-
-      const data = await response.json();
-      
       localStorage.setItem('token', data.token);
       localStorage.setItem('userId', data.staff.nic);
       localStorage.setItem('userName', data.staff.name);

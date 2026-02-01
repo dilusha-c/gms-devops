@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../services/api';
 
 const MembersList = () => {
   const [members, setMembers] = useState([]);
@@ -26,12 +26,8 @@ const MembersList = () => {
         return;
       }
 
-      try {
-        const response = await axios.get('http://localhost:8090/api/members', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
+        try {
+        const response = await api.get('/members');
         setMembers(response.data);
         setDisplayMembers(response.data);
         setLoading(false);
@@ -125,12 +121,7 @@ const MembersList = () => {
 
   const handleDelete = async (memberId) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.delete(`http://localhost:8090/api/members/${memberId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+      const response = await api.delete(`/members/${memberId}`);
       if (response.status === 204 || response.status === 200) {
         const updatedMembers = members.filter(member => member.id !== memberId);
         setMembers(updatedMembers);

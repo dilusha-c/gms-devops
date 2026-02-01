@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../../services/api';
 
 const Payments = () => {
   const [formData, setFormData] = useState({
@@ -24,7 +24,7 @@ const Payments = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8090/api/payments', null, {
+      const { data } = await api.post('/payments', null, {
         params: {
           memberId: formData.memberId,
           amount: formData.amount,
@@ -33,7 +33,7 @@ const Payments = () => {
         }
       });
       
-      setInvoice(response.data);
+      setInvoice(data);
       setError('');
     } catch (err) {
       setError('Failed to process payment. Please try again.');

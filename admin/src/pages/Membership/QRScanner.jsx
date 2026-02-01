@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
-import axios from 'axios';
+import api from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 
 const QRScanner = () => {
@@ -37,12 +37,7 @@ const QRScanner = () => {
                 const memberId = url.pathname.split('/').pop();
                 
                 // Mark attendance
-                const token = localStorage.getItem('token');
-                axios.post(`http://localhost:8090/api/attendance/mark/${memberId}`, {}, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                })
+                api.post(`/attendance/mark/${memberId}`, {})
                 .then(response => {
                     setSuccess(true);
                     setError(null);

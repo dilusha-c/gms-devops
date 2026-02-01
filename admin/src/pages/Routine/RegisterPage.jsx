@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from "../../components/header";
 import Footer from "../../components/Footer";
+import api from '../../services/api';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -43,24 +44,12 @@ const RegisterPage = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:8090/api/members/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Registration failed');
-      }
-
-      const data = await response.json();
+      const { data } = await api.post('/members/register', formData);
       console.log('Registration successful:', data);
       navigate('/login'); // Redirect to login page after successful registration
     } catch (err) {
-      setError(err.message || 'Registration failed. Please try again.');
+      const msg = err.response?.data?.message || err.message || 'Registration failed. Please try again.';
+      setError(msg);
     } finally {
       setLoading(false);
     }

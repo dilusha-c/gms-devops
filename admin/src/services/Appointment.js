@@ -1,7 +1,5 @@
 import api from './api';
 
-const BASE_URL = "http://localhost:8090";
-
 export const bookAppointment = async (appointmentData) => {
   return api.post('/appointments', appointmentData)
 }

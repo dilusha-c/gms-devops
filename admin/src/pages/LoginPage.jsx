@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Header from "../components/header";
 import Footer from "../components/Footer";
+import api from '../services/api';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -24,20 +25,8 @@ const LoginPage = () => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:8090/api/members/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const { data } = await api.post('/members/login', formData);
 
-      if (!response.ok) {
-        throw new Error('Invalid email or password');
-      }
-
-      const data = await response.json();
-      
       // Store user data in localStorage
       localStorage.setItem('token', data.token);
       localStorage.setItem('userRole', 'member');
@@ -47,7 +36,7 @@ const LoginPage = () => {
       // Navigate to the member's dashboard with their specific ID
       navigate(`/members/dashboard/${data.member.id}`);
     } catch (err) {
-      setError('Invalid email or password');
+      setError(err.response?.data?.message || 'Invalid email or password');
     }
   };
 

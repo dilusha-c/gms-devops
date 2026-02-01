@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../services/api';
 
 const AttendanceLog = () => {
   const [attendance, setAttendance] = useState([]);
@@ -11,12 +11,7 @@ const AttendanceLog = () => {
   useEffect(() => {
     const fetchAttendance = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8090/api/attendance/all', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
+        const response = await api.get('/attendance/all');
         setAttendance(response.data);
         setLoading(false);
       } catch (err) {

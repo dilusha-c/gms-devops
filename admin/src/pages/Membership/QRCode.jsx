@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
-import axios from 'axios';
+import api, { API_ROOT } from '../../services/api';
 import html2canvas from 'html2canvas';
 import { useParams } from 'react-router-dom';
 
@@ -20,11 +20,7 @@ const QRCodePage = () => {
       }
 
       try {
-        const response = await axios.get(`http://localhost:8090/api/members/${memberId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
+        const response = await api.get(`/members/${memberId}`);
         setLoading(false);
       } catch (err) {
         setError('Failed to fetch member profile');
@@ -71,7 +67,7 @@ const QRCodePage = () => {
     );
   }
 
-  const qrValue = `http://localhost:8090/api/members/verify/${memberId}`;
+  const qrValue = `${API_ROOT}/api/members/verify/${memberId}`;
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-lg">

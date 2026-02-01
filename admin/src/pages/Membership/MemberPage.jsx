@@ -12,7 +12,7 @@ import TicketsViewerPage from '../Tickets/TicketsViewerPage';
 import MemberProfile from '../Profile/MemberProfile';
 import BookAppointment from '../Appointments/MBookAppointment';
 import MyAppointmentsView from '../Appointments/MyAppointmentsView';
-import axios from 'axios';
+import api from '../../services/api';
 
 const MemberPage = () => {
   const location = useLocation();
@@ -32,11 +32,7 @@ const MemberPage = () => {
       }
 
       try {
-        const response = await axios.get(`http://localhost:8090/api/members/${storedMemberId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
+        const response = await api.get(`/members/${storedMemberId}`);
         const memberId = response.data.id;
         setMemberId(memberId);
         

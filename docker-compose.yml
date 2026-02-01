@@ -1,0 +1,33 @@
+services:
+  mysql:
+    image: mysql:8
+    container_name: gymsync-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: MYsql12121@
+      MYSQL_DATABASE: gms1
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  backend:
+    image: dilushachamika/gymsync-backend
+    container_name: gymsync-backend
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/gms1
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: MYsql12121@
+    ports:
+      - "8090:8090"
+
+  frontend:
+    image: dilushachamika/gymsync-frontend
+    container_name: gymsync-frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+
+
+volumes:
+  mysql_data:

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import api, { API_ROOT } from '../services/api';
 import { QRCodeSVG } from 'qrcode.react';
 import html2canvas from 'html2canvas';
 
@@ -13,12 +13,7 @@ const MemberDashboard = () => {
   useEffect(() => {
     const fetchMemberData = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(`http://localhost:8090/api/members/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
+        const response = await api.get(`/members/${id}`);
         
         // Calculate membership duration and progress
         const memberData = response.data;
@@ -100,7 +95,7 @@ const MemberDashboard = () => {
     }
   };
 
-  const qrValue = `http://localhost:8090/api/members/verify/${id}`;
+  const qrValue = `${API_ROOT}/api/members/verify/${id}`;
 
   return (
     <div className="p-6 max-w-6xl mx-auto">

@@ -1,7 +1,5 @@
 import api from './api';
 
-const BASE_URL = "http://localhost:8090";
-
 // Ticket API calls
 export const addTicket = async (ticketData) => {
   return api.post(`/tickets`, ticketData);

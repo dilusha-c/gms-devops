@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../services/api';
 
 const MemberProfile = () => {
   const { id } = useParams();
@@ -12,12 +12,7 @@ const MemberProfile = () => {
   useEffect(() => {
     const fetchMemberProfile = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(`http://localhost:8090/api/members/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
+        const response = await api.get(`/members/${id}`);
         setMember(response.data);
         setLoading(false);
       } catch (error) {
@@ -41,12 +36,7 @@ const MemberProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:8090/api/members/${id}`, member, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+      await api.put(`/members/${id}`, member);
       setIsEditing(false);
     } catch (error) {
       console.error('Error updating member profile:', error);

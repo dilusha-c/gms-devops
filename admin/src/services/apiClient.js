@@ -1,9 +1,12 @@
 import axios from 'axios';
 import authService from './authService';
 
-// Create an axios instance with a base URL
+// API root without `/api` suffix. Change this in admin/.env via `VITE_API_BASE_URL`.
+export const API_ROOT = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8090';
+
+// Axios instance configured to target `${API_ROOT}/api`
 const api = axios.create({
-  baseURL: 'http://localhost:8090/api',
+  baseURL: `${API_ROOT}/api`,
 });
 
 // Add a request interceptor to include the auth token
@@ -53,3 +56,5 @@ api.interceptors.response.use(
 );
 
 export default api;
+
+export { api as axiosInstance };

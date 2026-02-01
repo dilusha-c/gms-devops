@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import api from '../../services/api';
 
 
 const MemberList = () => {
@@ -17,14 +18,10 @@ const MemberList = () => {
 
   const fetchMembers = async () => {
     try {
-      const response = await fetch('http://localhost:8090/api/members');
-      if (!response.ok) {
-        throw new Error('Failed to fetch members');
-      }
-      const data = await response.json();
+      const { data } = await api.get('/members');
       setMembers(data);
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || err.message || 'Failed to fetch members');
     } finally {
       setLoading(false);
     }

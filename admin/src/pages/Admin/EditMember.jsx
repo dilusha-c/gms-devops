@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../services/api';
 
 const EditMember = () => {
     const { id } = useParams();
@@ -20,12 +20,7 @@ const EditMember = () => {
     useEffect(() => {
         const fetchMember = async () => {
             try {
-                const token = localStorage.getItem('token');
-                const response = await axios.get(`http://localhost:8090/api/members/${id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+                const response = await api.get(`/members/${id}`);
                 setMember(response.data);
                 setFormData({
                     firstName: response.data.firstName,
@@ -56,11 +51,7 @@ const EditMember = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const token = localStorage.getItem('token');
-            const response = await axios.put(`http://localhost:8090/api/members/${id}`, formData, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }            });
+            const response = await api.put(`/members/${id}`, formData);
             if (response.status === 200) {
                 navigate('/admin/members');
             }

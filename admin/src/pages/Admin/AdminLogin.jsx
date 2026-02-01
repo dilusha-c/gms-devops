@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
 import authService from '../../services/authService';
-import api from '../../services/apiClient';
+import api from '../../services/api';
 
 const AdminLogin = () => {
     const [email, setEmail] = useState('');
@@ -20,13 +19,13 @@ const AdminLogin = () => {
         setError('');
 
         try {
-            // Using axios directly here since we're not authenticated yet
-            const response = await axios.post('http://localhost:8090/api/admin/login', {
+            const { data } = await api.post('/admin/login', {
                 email,
                 password
-            });            if (response.data && response.data.token) {
+            });
+            if (data && data.token) {
                 // Store token and admin data using authService
-                authService.loginAdmin(response.data.admin, response.data.token);
+                authService.loginAdmin(data.admin, data.token);
                   // Force a page reload by using window.location
                 window.location.href = '/admin/dashboard';
             } else {

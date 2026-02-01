@@ -1,7 +1,5 @@
 import api from './api';
 
-const BASE_URL = "http://localhost:8090"
-
 // Staff APIs
 export const addStaff = async (staff) => {
   return api.post('/staff', staff);

@@ -1,72 +1,70 @@
-import axios from "axios";
-
-const BASE_URL = "http://localhost:8090";
+import api from './api';
 
 export const addMaintenanceSchedule = async (maintenanceSchedule) => {
-  return axios.post(`${BASE_URL}/api/maintenance-schedule`, maintenanceSchedule);
+  return api.post('/maintenance-schedule', maintenanceSchedule);
 }
 
 export const getMaintenanceSchedule = async () => {
-  return axios.get(`${BASE_URL}/api/maintenance-schedule`);
+  return api.get('/maintenance-schedule');
 }
 
 export const getMaintenanceScheduleById = async (id) => {
-  return axios.get(`${BASE_URL}/api/maintenance-schedule/${id}`);
+  return api.get(`/maintenance-schedule/${id}`);
 }
 
 export const deleteMaintenanceSchedule = async (id) => {
-  return axios.delete(`${BASE_URL}/api/maintenance-schedule/${id}`);
+  return api.delete(`/maintenance-schedule/${id}`);
 }
 
 export const searchMaintenanceSchedule = async (search) => {
-  return axios.get(`${BASE_URL}/api/maintenance-schedule/search?search=${search}`);
+  return api.get(`/maintenance-schedule/search?search=${encodeURIComponent(search)}`);
 };
 
 export const updateMaintenanceDate = async (id, maintenanceDate) => {
-  return axios.put(`${BASE_URL}/api/maintenance-schedule/${id}/MaintenanceDate?date=${maintenanceDate}`);
+  return api.put(`/maintenance-schedule/${id}/MaintenanceDate?date=${encodeURIComponent(maintenanceDate)}`);
 }
 
 export const updateMaintenanceStatus = async (id, status) => {
-  return axios.put(`${BASE_URL}/api/maintenance-schedule/${id}/status?status=${status}`);
+  return api.put(`/maintenance-schedule/${id}/status?status=${encodeURIComponent(status)}`);
 }
 
 export const updateMaintenanceCost = async (id, maintenanceCost) => {
-  return axios.put(`${BASE_URL}/api/maintenance-schedule/${id}/cost?cost=${maintenanceCost}`);
+  return api.put(`/maintenance-schedule/${id}/cost?cost=${encodeURIComponent(maintenanceCost)}`);
 }
 
 export const updateMaintenanceTechnician = async (id, technician) => {
-  return axios.put(`${BASE_URL}/api/maintenance-schedule/${id}/technician?technician=${technician}`);
+  return api.put(`/maintenance-schedule/${id}/technician?technician=${encodeURIComponent(technician)}`);
 }
 
 export const updateMaintenanceDescription = async (id, description) => {
-  return axios.put(`${BASE_URL}/api/maintenance-schedule/${id}/description?description=${description}`);
+  return api.put(`/maintenance-schedule/${id}/description?description=${encodeURIComponent(description)}`);
 }
 
 export const filterMaintenanceScheduleByStatus = async (status) => {
-  return axios.get(`${BASE_URL}/api/maintenance-schedule/filter-by-status?status=${status}`);
+  return api.get(`/maintenance-schedule/filter-by-status?status=${encodeURIComponent(status)}`);
 }
 
 export const filterMaintenanceScheduleByType = async (type) => {
-  return axios.get(`${BASE_URL}/api/maintenance-schedule/filter-by-type?type=${type}`);
+  return api.get(`/maintenance-schedule/filter-by-type?type=${encodeURIComponent(type)}`);
 }
 
 export const filterMaintenanceScheduleByEquipmentId = async (equipmentId) => {
-  return axios.get(`${BASE_URL}/api/maintenance-schedule/filter-by-equipmentId?equipmentId=${equipmentId}`);
+  return api.get(`/maintenance-schedule/filter-by-equipmentId?equipmentId=${encodeURIComponent(equipmentId)}`);
 }
 
 // Monthly Maintenance Cost API
 export const monthlyMaintenanceCost = async () => {
-  return axios.get(`${BASE_URL}/api/monthly-costs`);
+  return api.get('/monthly-costs');
 };
 
 export const updateMonthlyCost = async () => {
-  return axios.post(`${BASE_URL}/api/update-monthly-costs`);
+  return api.post('/update-monthly-costs');
 };
 
 export const filterByMonth = async (month) => {
-  return axios.get(`${BASE_URL}/api/filter-monthly-cost?month=${month}`);
+  return api.get(`/filter-monthly-cost?month=${encodeURIComponent(month)}`);
 };
 
 export const filterByYear = async (year) => {
-  return axios.get(`${BASE_URL}/api/filter-yearly-cost?year=${year}`);
+  return api.get(`/filter-yearly-cost?year=${encodeURIComponent(year)}`);
 };
