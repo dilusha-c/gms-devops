@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "MYsql12121@"
+      MYSQL_DATABASE: "gms1"
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  backend:
+    build: .
+    ports:
+      - "8090:8090"
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mysql://db:3306/gms1"
+      SPRING_DATASOURCE_USERNAME: "root"
+      SPRING_DATASOURCE_PASSWORD: "MYsql12121@"
+    depends_on:
+      - db
+
+volumes:
+  db_data:
