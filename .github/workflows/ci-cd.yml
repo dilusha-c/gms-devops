@@ -41,7 +41,7 @@ jobs:
 
       - name: Build Frontend Image
         run: |
-          cd frontend
+          cd admin
           docker build -t ${{ secrets.DOCKER_USERNAME }}/gymsync-frontend .
 
       - name: Push Frontend Image
