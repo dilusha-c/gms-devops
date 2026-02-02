@@ -2,7 +2,9 @@ import axios from 'axios';
 import authService from './authService';
 
 // API root without `/api` suffix. Change this in admin/.env via `VITE_API_BASE_URL`.
-export const API_ROOT = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8090';
+// Use a relative API root by default so browser requests go to the same origin
+// (e.g. http://EC2_IP:5173/api/...) and Nginx can proxy `/api/` to the backend.
+export const API_ROOT = import.meta.env.VITE_API_BASE_URL || '';
 
 // Axios instance configured to target `${API_ROOT}/api`
 const api = axios.create({
