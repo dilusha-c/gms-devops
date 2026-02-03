@@ -1,63 +1,50 @@
-🏋️ GymSync DevOps
+# 🏋️ GymSync DevOps
 
-CI/CD Enabled Full-Stack Deployment on AWS
+_CI/CD Enabled Full-Stack Deployment on AWS_
+
+## Overview
 
 GymSync DevOps is a production-ready DevOps implementation for a full-stack Gym Management System.
 The project demonstrates end-to-end CI/CD, Dockerized deployment, and cloud hosting on AWS EC2 using real-world DevOps practices.
 
 Every push to the main branch automatically builds, containerizes, and deploys the application to a live EC2 instance.
 
+## 🚀 Architecture Overview
 
-🚀 Architecture Overview
+- Frontend: React (Vite) served via Nginx container
+- Backend: Spring Boot REST API
+- Database: MySQL
+- CI/CD: GitHub Actions
+- Containerization: Docker & Docker Compose
+- Cloud: AWS EC2 (Ubuntu)
 
-Frontend: React (Vite) served via Nginx container
+## 🔄 CI/CD Workflow
 
-Backend: Spring Boot REST API
+1. Code pushed to GitHub main branch
+2. GitHub Actions builds backend JAR and frontend assets
+3. Docker images are built for backend and frontend
+4. Images are pushed to Docker Hub
+5. GitHub Actions connects to AWS EC2 via SSH
+6. Docker Compose pulls latest images and redeploys containers
 
-Database: MySQL
+## 🖼️ Project Screenshots
 
-CI/CD: GitHub Actions
-
-Containerization: Docker & Docker Compose
-
-Cloud: AWS EC2 (Ubuntu)
-
-🔄 CI/CD Workflow
-
-Code pushed to GitHub main branch
-
-GitHub Actions builds backend JAR and frontend assets
-
-Docker images are built for backend and frontend
-
-Images are pushed to Docker Hub
-
-GitHub Actions connects to AWS EC2 via SSH
-
-Docker Compose pulls latest images and redeploys containers
-
-🖼️ Project Screenshots
-1️⃣ GitHub Actions CI/CD Pipeline
-
+1️⃣ GitHub Actions CI/CD Pipeline  
 Automated CI/CD pipeline showing successful build and deployment.
 
-2️⃣ Docker Hub Repositories
-
+2️⃣ Docker Hub Repositories  
 Docker Hub repositories storing backend and frontend images.
 
-3️⃣ AWS EC2 Instance
-
+3️⃣ AWS EC2 Instance  
 AWS EC2 instance hosting the GymSync application.
 
-4️⃣ Docker Containers Running on EC2
-
+4️⃣ Docker Containers Running on EC2  
 SSH terminal showing live Docker containers using Docker Compose.
 
-5️⃣ Live GymSync Web Application
-
+5️⃣ Live GymSync Web Application  
 Production GymSync admin dashboard running on AWS.
 
-🐳 Docker Compose Configuration
+## 🐳 Docker Compose Configuration
 
 ```yaml
 services:
@@ -95,44 +82,27 @@ volumes:
 
 ```
 
-🧰 Technologies Used
+## 🧰 Technologies Used
 
-GitHub Actions
+- GitHub Actions
+- Docker
+- AWS EC2
+- CI/CD Automation
 
-Docker
+## 📌 DevOps Highlights
 
-Docker Compose
+- Fully automated CI/CD pipeline
+- Zero manual deployment
+- Multi-container orchestration
+- Cloud-based production deployment
+- Real-world DevOps workflow
 
-AWS EC2
+## 👤 Author
 
-Ubuntu Linux
-
-Spring Boot
-
-React (Vite)
-
-MySQL
-
-CI/CD Automation
-
-📌 DevOps Highlights
-
-Fully automated CI/CD pipeline
-
-Zero manual deployment
-
-Multi-container orchestration
-
-Cloud-based production deployment
-
-Real-world DevOps workflow
-
-👤 Author
-
-Dilusha Chamika
-Computer Systems Engineering Undergraduate
+Dilusha Chamika  
+Computer Systems Engineering Undergraduate  
 DevOps | Cloud | Automation
 
-📄 License
+## 📄 License
 
 MIT License
