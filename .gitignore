@@ -1,2 +1,5 @@
 dilusha_frontend
 Backend.zip
+
+# Ignore local environment files
+.env
