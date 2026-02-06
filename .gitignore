@@ -1,5 +1,13 @@
 dilusha_frontend
 Backend.zip
+minikube-linux-amd64
 
-# Ignore local environment files
+# Common ignores
 .env
+.env.*
+**/node_modules/
+**/dist/
+.DS_Store
+.idea/
+.vscode/
+
