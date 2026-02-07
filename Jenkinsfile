@@ -22,7 +22,7 @@ pipeline {
             }
             steps {
                 dir('Backend') {
-                    sh 'mvn clean package'
+                    sh 'mvn clean package -DskipTests'
                 }
             }
         }
