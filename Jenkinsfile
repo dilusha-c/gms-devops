@@ -13,15 +13,15 @@ pipeline {
             }
         }
 
-        stage('Build') {
-            steps {
-                sh 'mvn clean package -DskipTests'
+        stage('Build & Test') {
+            agent {
+                docker {
+                    image 'maven:3.9.6-eclipse-temurin-17'
+                    args '-v $HOME/.m2:/root/.m2'
+                }
             }
-        }
-
-        stage('Test') {
             steps {
-                sh 'mvn test'
+                sh 'mvn clean package'
             }
         }
 
@@ -34,7 +34,7 @@ pipeline {
 
     post {
         success {
-            echo 'Build and Docker image created successfully'
+            echo 'Build completed successfully'
         }
         failure {
             echo 'Pipeline failed'
