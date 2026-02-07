@@ -17,7 +17,7 @@ pipeline {
             agent {
                 docker {
                     image 'maven:3.9.6-eclipse-temurin-17'
-                    args '-v $HOME/.m2:/root/.m2'
+                    args '-v /var/run/docker.sock:/var/run/docker.sock -v $HOME/.m2:/root/.m2'
                 }
             }
             steps {
@@ -29,15 +29,6 @@ pipeline {
             steps {
                 sh 'docker build -t $IMAGE_NAME .'
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Build completed successfully'
-        }
-        failure {
-            echo 'Pipeline failed'
         }
     }
 }
