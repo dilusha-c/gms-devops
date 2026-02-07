@@ -21,7 +21,7 @@ pipeline {
                 }
             }
             steps {
-                dir('backend') {
+                dir('Backend') {
                     sh 'mvn clean package'
                 }
             }
@@ -29,8 +29,14 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh 'docker build -t $IMAGE_NAME backend'
+                sh 'docker build -t $IMAGE_NAME Backend'
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'CI pipeline completed successfully'
         }
     }
 }
