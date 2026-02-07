@@ -1,0 +1,76 @@
+name: Pull Request Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+    env:
+      SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/gms1
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: gms1
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Wait for MySQL to be ready
+        run: |
+          echo "Waiting for MySQL on 127.0.0.1:3306..."
+          for i in {1..60}; do
+            if nc -z 127.0.0.1 3306; then
+              echo "MySQL is up"
+              break
+            fi
+            sleep 2
+          done
+
+      - name: Run Backend Tests
+        run: |
+          cd Backend
+          chmod +x mvnw
+          ./mvnw test
+
+  frontend-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Frontend Dependencies
+        run: |
+          cd admin
+          npm install
+
+      - name: Run Frontend Tests
+        run: |
+          cd admin
+          npm test

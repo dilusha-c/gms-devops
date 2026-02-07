@@ -1,4 +1,8 @@
-# 🏋️ GymSync DevOps
+# GymSync
+
+![Pull Request Tests](https://github.com/dilusha-c/gms-devops/actions/workflows/tests.yml/badge.svg)
+
+![CI-CD Pipeline](https://github.com/dilusha-c/gms-devops/actions/workflows/ci-cd.yml/badge.svg)
 
 _CI/CD Enabled Full-Stack Deployment on AWS_
 
