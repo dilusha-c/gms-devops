@@ -5,6 +5,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: gms1
+      MYSQL_USER: ${SPRING_DATASOURCE_USERNAME}
+      MYSQL_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
     volumes:
       - mysql_data:/var/lib/mysql
     restart: always
@@ -21,6 +23,7 @@ services:
       mysql:
         condition: service_healthy
     environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/gms1
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
     ports:
@@ -39,7 +42,7 @@ services:
       backend:
         condition: service_healthy
     ports:
-      - "5173:80"
+      - "80:80"
     restart: always
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost"]
