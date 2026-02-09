@@ -1,14 +1,13 @@
 import axios from 'axios';
 import authService from './authService';
 
-// API root without `/api` suffix. Change this in admin/.env via `VITE_API_BASE_URL`.
-// Use a relative API root by default so browser requests go to the same origin
-// (e.g. http://EC2_IP:5173/api/...) and Nginx can proxy `/api/` to the backend.
-export const API_ROOT = import.meta.env.VITE_API_BASE_URL || '';
+// Resolve the current origin in-browser so we can construct absolute URLs
+// (used by QR codes) without relying on Vite env files.
+export const API_ROOT = typeof window !== 'undefined' ? window.location.origin : '';
 
-// Axios instance configured to target `${API_ROOT}/api`
+// Always hit the backend via the same origin `/api` path so Nginx can proxy it.
 const api = axios.create({
-  baseURL: `${API_ROOT}/api`,
+  baseURL: API_ROOT ? `${API_ROOT}/api` : '/api',
 });
 
 // Add a request interceptor to include the auth token
