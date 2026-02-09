@@ -18,7 +18,7 @@ Every push to the main branch automatically builds, containerizes, and deploys t
 - Frontend: React (Vite) served via Nginx container
 - Backend: Spring Boot REST API
 - Database: MySQL
-- CI/CD: GitHub Actions
+- CI/CD: GitHub Actions + Atlassian Bamboo
 - Containerization: Docker & Docker Compose
 - Cloud: AWS EC2 (Ubuntu)
 
@@ -31,21 +31,34 @@ Every push to the main branch automatically builds, containerizes, and deploys t
 5. GitHub Actions connects to AWS EC2 via SSH
 6. Docker Compose pulls latest images and redeploys containers
 
+### 🟦 Bamboo Dev Pipeline
+
+In addition to GitHub Actions, an Atlassian Bamboo plan mirrors the deployment for the dev environment:
+
+1. **Trigger**: Bamboo plan listens on the `dev` branch.
+2. **Build**: Runs Maven and Vite builds inside agents, producing artifacts and Docker images.
+3. **Registry Push**: Tags and pushes `gymsync-backend` and `gymsync-frontend` images to Docker Hub.
+4. **Deploy**: Uses Bamboo SSH tasks to log into the dev EC2 host, pull the latest images, and execute `docker compose up -d --force-recreate`.
+5. **Verification**: Final stage hits the health endpoints (Nginx `/` and backend `/actuator/health`) to confirm a successful rollout.
+
 ## 🖼️ Project Screenshots
 
 1️⃣ GitHub Actions CI/CD Pipeline  
 Automated CI/CD pipeline showing successful build and deployment.
 
-2️⃣ Docker Hub Repositories  
+2️⃣ Bamboo Dev Pipeline Dashboard  
+Atlassian Bamboo plan stages covering build, push, deploy, and verification for the dev environment.
+
+3️⃣ Docker Hub Repositories  
 Docker Hub repositories storing backend and frontend images.
 
-3️⃣ AWS EC2 Instance  
+4️⃣ AWS EC2 Instance  
 AWS EC2 instance hosting the GymSync application.
 
-4️⃣ Docker Containers Running on EC2  
+5️⃣ Docker Containers Running on EC2  
 SSH terminal showing live Docker containers using Docker Compose.
 
-5️⃣ Live GymSync Web Application  
+6️⃣ Live GymSync Web Application  
 Production GymSync admin dashboard running on AWS.
 
 ## 🐳 Docker Compose Configuration
@@ -91,11 +104,11 @@ volumes:
 - GitHub Actions
 - Docker
 - AWS EC2
-- CI/CD Automation
+- CI/CD Automation (GitHub Actions + Bamboo)
 
 ## 📌 DevOps Highlights
 
-- Fully automated CI/CD pipeline
+- Fully automated CI/CD pipeline (prod via GitHub Actions, dev via Bamboo)
 - Zero manual deployment
 - Multi-container orchestration
 - Cloud-based production deployment
