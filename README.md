@@ -46,20 +46,32 @@ In addition to GitHub Actions, an Atlassian Bamboo plan mirrors the deployment f
 1️⃣ GitHub Actions CI/CD Pipeline  
 Automated CI/CD pipeline showing successful build and deployment.
 
+![Demo Image](images/Github_Action/GitHub_Actions_CI_CD_Pipeline.png)
+
 2️⃣ Bamboo Dev Pipeline Dashboard  
 Atlassian Bamboo plan stages covering build, push, deploy, and verification for the dev environment.
+
+![Demo Image](images/Bamboo/Bamboo_Backend_CI.png)
 
 3️⃣ Docker Hub Repositories  
 Docker Hub repositories storing backend and frontend images.
 
+![Demo Image](images/DockerHub_Repositories.png)
+
 4️⃣ AWS EC2 Instance  
 AWS EC2 instance hosting the GymSync application.
+
+![Demo Image](images/Bamboo/AWS_EC2_Instance_Bamboo.png)
 
 5️⃣ Docker Containers Running on EC2  
 SSH terminal showing live Docker containers using Docker Compose.
 
+![Demo Image](images/Bamboo/Docker_Containers_Bamboo.png)
+
 6️⃣ Live GymSync Web Application  
 Production GymSync admin dashboard running on AWS.
+
+![Demo Image](images/Bamboo/Live_GymSync_Web_Github_Bamboo.png)
 
 ## 🐳 Docker Compose Configuration
 
