@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+data:
+  SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/gymsync
+  SPRING_DATASOURCE_USERNAME: gymuser
