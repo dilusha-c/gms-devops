@@ -1,19 +1,54 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: frontend
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: frontend
-  template:
-    metadata:
-      labels:
-        app: frontend
-    spec:
-      containers:
-        - name: frontend
-          image: dilushachamika/gymsync-frontend:latest
-          ports:
-            - containerPort: 80
+name: Frontend CI/CD to Kubernetes
+
+on:
+  push:
+    branches:
+      - k8s
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Detect frontend changes
+        id: frontend-changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            frontend:
+              - 'admin/**'
+
+      - name: Login to Docker Hub
+        if: steps.frontend-changes.outputs.frontend == 'true'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build frontend Docker image
+        if: steps.frontend-changes.outputs.frontend == 'true'
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/gymsync-frontend:${{ github.run_number }} .
+        working-directory: admin
+
+      - name: Push frontend Docker image
+        if: steps.frontend-changes.outputs.frontend == 'true'
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/gymsync-frontend:${{ github.run_number }}
+
+      - name: Set up kubectl
+        if: steps.frontend-changes.outputs.frontend == 'true'
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
+
+      - name: Deploy frontend to Kubernetes
+        if: steps.frontend-changes.outputs.frontend == 'true'
+        run: |
+          kubectl set image deployment/frontend \
+            frontend=${{ secrets.DOCKER_USERNAME }}/gymsync-frontend:${{ github.run_number }} \
+            -n gym-sync
+          kubectl rollout status deployment/frontend -n gym-sync
