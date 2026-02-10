@@ -4,9 +4,17 @@ metadata:
   name: backend
 spec:
   replicas: 2
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+
   selector:
     matchLabels:
       app: backend
+
   template:
     metadata:
       labels:
@@ -17,31 +25,30 @@ spec:
           image: dilushachamika/gymsync-backend:v2
           ports:
             - containerPort: 8090
+
           envFrom:
             - configMapRef:
                 name: backend-config
             - secretRef:
                 name: backend-secret
+
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
               port: 8090
             initialDelaySeconds: 30
             periodSeconds: 10
+
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
               port: 8090
             initialDelaySeconds: 30
             periodSeconds: 10
+
           startupProbe:
             httpGet:
               path: /actuator/health
               port: 8090
             failureThreshold: 30
             periodSeconds: 10
-          strategy:
-            type: RollingUpdate
-            rollingUpdate:
-              maxUnavailable: 0
-              maxSurge: 1
