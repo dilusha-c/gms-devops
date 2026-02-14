@@ -13,7 +13,6 @@ This repository contains two deployment approaches maintained in separate branch
 This project demonstrates two production deployment strategies:
 
 ### 1. Docker Compose Deployment (main branch)
-- CI/CD with GitHub Actions and Bamboo
 - AWS EC2 hosting
 - Docker Compose orchestration
 
