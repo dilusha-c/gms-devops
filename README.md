@@ -13,7 +13,6 @@ This repository contains two deployment approaches maintained in separate branch
 This project demonstrates two production deployment strategies:
 
 ### 1. Docker Compose Deployment (main branch)
-- CI/CD with GitHub Actions
 - AWS EC2 hosting
 - Docker Compose orchestration
 
@@ -67,32 +66,37 @@ In addition to GitHub Actions, an Atlassian Bamboo plan mirrors the deployment f
 1️⃣ GitHub Actions CI/CD Pipeline  
 Automated CI/CD pipeline showing successful build and deployment.
 
-![Demo Image](images/Github_Action/GitHub_Actions_CI_CD_Pipeline.png)
+![GitHub Actions CI/CD Pipeline](images/Github_Action/GitHub_Actions_CI_CD_Pipeline.png)
 
 2️⃣ Bamboo Dev Pipeline Dashboard  
 Atlassian Bamboo plan stages covering build, push, deploy, and verification for the dev environment.
 
-![Demo Image](images/Bamboo/Bamboo_Backend_CI.png)
+![Bamboo Dev Pipeline](images/Bamboo/Bamboo_Backend_CI.png)
 
 3️⃣ Docker Hub Repositories  
 Docker Hub repositories storing backend and frontend images.
 
-![Demo Image](images/DockerHub_Repositories.png)
+![Docker Hub Repositories](images/DockerHub_Repositories.png)
 
 4️⃣ AWS EC2 Instance  
 AWS EC2 instance hosting the GymSync application.
 
-![Demo Image](images/Bamboo/AWS_EC2_Instance_Bamboo.png)
+![AWS EC2 Instance](images/Bamboo/AWS_EC2_Instance_Bamboo.png)
 
 5️⃣ Docker Containers Running on EC2  
 SSH terminal showing live Docker containers using Docker Compose.
 
-![Demo Image](images/Bamboo/Docker_Containers_Bamboo.png)
+![Docker Containers Running](images/Bamboo/Docker_Containers_Bamboo.png)
 
 6️⃣ Live GymSync Web Application  
 Production GymSync admin dashboard running on AWS.
 
-![Demo Image](images/Bamboo/Live_GymSync_Web_Github_Bamboo.png)
+![Live GymSync Application](images/Bamboo/Live_GymSync_Web_Github_Bamboo.png)
+
+7️⃣ Kubernetes System Overview (EKS Deployment) ⭐  
+Kubernetes cluster deployment showing running backend and frontend pods, MySQL StatefulSet, services, and deployments demonstrating microservices architecture and container orchestration on AWS EKS.
+
+![Kubernetes System Overview](images/k8s/Kubernetes_System_Overview.png)
 
 ## 🐳 Docker Compose Configuration
 
