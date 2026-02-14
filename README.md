@@ -1,4 +1,4 @@
-# GymSync
+# DevOps Lab: Full-Stack Deployment
 
 ![Pull Request Tests](https://github.com/dilusha-c/gms-devops/actions/workflows/tests.yml/badge.svg)
 
@@ -6,9 +6,30 @@
 
 _CI/CD Enabled Full-Stack Deployment on AWS_
 
+This repository contains two deployment approaches maintained in separate branches: the `main` branch provides a Docker Compose + EC2 deployment, while the `k8s` branch contains Kubernetes manifests for a cluster-based deployment.
+
+## Deployment Approaches
+
+This project demonstrates two production deployment strategies:
+
+### 1. Docker Compose Deployment (main branch)
+- CI/CD with GitHub Actions and Bamboo
+- AWS EC2 hosting
+- Docker Compose orchestration
+
+### 2. Kubernetes Deployment (k8s branch)
+- Kubernetes cluster architecture
+- MySQL StatefulSet with persistent storage
+- Backend and frontend deployments
+- Ingress routing
+- Rolling updates
+- GitHub Actions CI/CD to Kubernetes
+- AWS EKS deployment
+(See the `k8s` folder for example manifests such as the Ingress configuration.)
+
 ## Overview
 
-GymSync DevOps is a production-ready DevOps implementation for a full-stack Gym Management System.
+DevOps Lab is a production-ready DevOps implementation that demonstrates full-stack deployment patterns and CI/CD workflows for learning and evaluation.
 The project demonstrates end-to-end CI/CD, Dockerized deployment, and cloud hosting on AWS EC2 using real-world DevOps practices.
 
 Every push to the main branch automatically builds, containerizes, and deploys the application to a live EC2 instance.
@@ -59,7 +80,7 @@ Docker Hub repositories storing backend and frontend images.
 ![Demo Image](images/DockerHub_Repositories.png)
 
 4️⃣ AWS EC2 Instance  
-AWS EC2 instance hosting the GymSync application.
+AWS EC2 instance hosting the DevOps Lab application.
 
 ![Demo Image](images/Bamboo/AWS_EC2_Instance_Bamboo.png)
 
@@ -68,8 +89,8 @@ SSH terminal showing live Docker containers using Docker Compose.
 
 ![Demo Image](images/Bamboo/Docker_Containers_Bamboo.png)
 
-6️⃣ Live GymSync Web Application  
-Production GymSync admin dashboard running on AWS.
+6️⃣ Live DevOps Lab Web Application  
+Production DevOps Lab admin dashboard running on AWS.
 
 ![Demo Image](images/Bamboo/Live_GymSync_Web_Github_Bamboo.png)
 
