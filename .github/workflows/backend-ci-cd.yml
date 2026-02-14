@@ -1,71 +1,88 @@
-name: Backend CI/CD to Kubernetes
+name: Backend CI/CD
 
 on:
   push:
-    branches:
-      - k8s
+    branches: [k8s]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    outputs:
-      changed: ${{ steps.backend-changes.outputs.backend }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      # Checkout code
+      - uses: actions/checkout@v4
 
+      # Detect backend changes only
       - name: Detect backend changes
-        id: backend-changes
+        id: changes
         uses: dorny/paths-filter@v3
         with:
           filters: |
             backend:
               - 'Backend/**'
 
-      - name: Set up JDK 17
-        if: steps.backend-changes.outputs.backend == 'true'
+      # Stop job if backend not changed (huge speed improvement)
+      - name: Stop if no backend changes
+        if: steps.changes.outputs.backend != 'true'
+        run: echo "No backend changes"
+
+      # Java setup with dependency caching
+      - name: Setup JDK with cache
+        if: steps.changes.outputs.backend == 'true'
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          java-version: 17
+          distribution: temurin
+          cache: maven
 
+      # Build Spring Boot
       - name: Build Backend JAR
-        if: steps.backend-changes.outputs.backend == 'true'
+        if: steps.changes.outputs.backend == 'true'
         run: |
           cd Backend
           chmod +x mvnw
           ./mvnw clean package -DskipTests
 
-      - name: Build Docker image
-        if: steps.backend-changes.outputs.backend == 'true'
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/gymsync-backend:${{ github.run_number }} .
-        working-directory: Backend
-
+      # Login Docker Hub
       - name: Login to Docker Hub
-        if: steps.backend-changes.outputs.backend == 'true'
+        if: steps.changes.outputs.backend == 'true'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Push Backend Docker Image
-        if: steps.backend-changes.outputs.backend == 'true'
-        run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/gymsync-backend:${{ github.run_number }}
+      # Build Docker image
+      - name: Build Docker image
+        if: steps.changes.outputs.backend == 'true'
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/gymsync-backend:${{ github.run_number }} .
+        working-directory: Backend
 
-      - name: Set up kubectl
-        if: steps.backend-changes.outputs.backend == 'true'
+      # Push Docker image
+      - name: Push Docker image
+        if: steps.changes.outputs.backend == 'true'
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/gymsync-backend:${{ github.run_number }}
+
+      # AWS login (needed for EKS)
+      - name: Configure AWS credentials
+        if: steps.changes.outputs.backend == 'true'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      # Setup kubectl access
+      - name: Setup kubectl
+        if: steps.changes.outputs.backend == 'true'
         run: |
           mkdir -p $HOME/.kube
           echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
 
-      - name: Deploy to Kubernetes
-        if: steps.backend-changes.outputs.backend == 'true'
+      # Deploy new version
+      - name: Deploy Backend to EKS
+        if: steps.changes.outputs.backend == 'true'
         run: |
           kubectl set image deployment/backend \
             backend=${{ secrets.DOCKER_USERNAME }}/gymsync-backend:${{ github.run_number }} \
             -n gym-sync
           kubectl rollout status deployment/backend -n gym-sync
-
