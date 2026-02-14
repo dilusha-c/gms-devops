@@ -1,52 +1,68 @@
-name: Frontend CI/CD to Kubernetes
+name: Frontend CI/CD
 
 on:
   push:
-    branches:
-      - k8s
+    branches: [k8s]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
+      # Detect frontend changes
       - name: Detect frontend changes
-        id: frontend-changes
+        id: changes
         uses: dorny/paths-filter@v3
         with:
           filters: |
             frontend:
               - 'admin/**'
 
+      # Skip if no changes
+      - name: Stop if no frontend changes
+        if: steps.changes.outputs.frontend != 'true'
+        run: echo "No frontend changes"
+
+      # Login Docker
       - name: Login to Docker Hub
-        if: steps.frontend-changes.outputs.frontend == 'true'
+        if: steps.changes.outputs.frontend == 'true'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build frontend Docker image
-        if: steps.frontend-changes.outputs.frontend == 'true'
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/gymsync-frontend:${{ github.run_number }} .
+      # Build frontend container
+      - name: Build Docker image
+        if: steps.changes.outputs.frontend == 'true'
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/gymsync-frontend:${{ github.run_number }} .
         working-directory: admin
 
-      - name: Push frontend Docker image
-        if: steps.frontend-changes.outputs.frontend == 'true'
-        run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/gymsync-frontend:${{ github.run_number }}
+      # Push image
+      - name: Push Docker image
+        if: steps.changes.outputs.frontend == 'true'
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/gymsync-frontend:${{ github.run_number }}
 
-      - name: Set up kubectl
-        if: steps.frontend-changes.outputs.frontend == 'true'
+      # AWS login
+      - name: Configure AWS credentials
+        if: steps.changes.outputs.frontend == 'true'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      # Setup kubectl
+      - name: Setup kubectl
+        if: steps.changes.outputs.frontend == 'true'
         run: |
           mkdir -p $HOME/.kube
           echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
 
-      - name: Deploy frontend to Kubernetes
-        if: steps.frontend-changes.outputs.frontend == 'true'
+      # Deploy frontend
+      - name: Deploy Frontend to EKS
+        if: steps.changes.outputs.frontend == 'true'
         run: |
           kubectl set image deployment/frontend \
             frontend=${{ secrets.DOCKER_USERNAME }}/gymsync-frontend:${{ github.run_number }} \
