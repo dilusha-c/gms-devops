@@ -6,6 +6,27 @@
 
 _CI/CD Enabled Full-Stack Deployment on AWS_
 
+This repository contains two deployment approaches maintained in separate branches: the `main` branch provides a Docker Compose + EC2 deployment, while the `k8s` branch contains Kubernetes manifests for a cluster-based deployment.
+
+## Deployment Approaches
+
+This project demonstrates two production deployment strategies:
+
+### 1. Docker Compose Deployment (main branch)
+- CI/CD with GitHub Actions
+- AWS EC2 hosting
+- Docker Compose orchestration
+
+### 2. Kubernetes Deployment (k8s branch)
+- Kubernetes cluster architecture
+- MySQL StatefulSet with persistent storage
+- Backend and frontend deployments
+- Ingress routing
+- Rolling updates
+- GitHub Actions CI/CD to Kubernetes
+- AWS EKS deployment
+(See the `k8s` folder for example manifests such as the Ingress configuration.)
+
 ## Overview
 
 GymSync DevOps is a production-ready DevOps implementation for a full-stack Gym Management System.
