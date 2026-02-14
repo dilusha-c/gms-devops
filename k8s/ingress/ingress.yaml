@@ -3,12 +3,14 @@ kind: Ingress
 metadata:
   name: gymsync-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+
 spec:
-  ingressClassName: nginx
+  ingressClassName: alb
+
   rules:
-    - host: gymsync.local
-      http:
+    - http:
         paths:
           - path: /
             pathType: Prefix
@@ -17,6 +19,7 @@ spec:
                 name: frontend
                 port:
                   number: 80
+
           - path: /api
             pathType: Prefix
             backend:
